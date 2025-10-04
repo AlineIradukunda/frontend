@@ -3,8 +3,10 @@ import axios from "axios";
 // -------------------
 // Backend API instance
 // -------------------
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000/api/";
+
 const api = axios.create({
-  baseURL: "http://localhost:8000/api/", // your Django backend
+  baseURL: BACKEND_URL,
 });
 
 export default api;
@@ -28,7 +30,6 @@ export const fetchCrochetImages = async (query = "crochet", perPage = 10) => {
     return [];
   }
 
-  // Clamp perPage to Unsplash max (30)
   const safePerPage = Math.min(perPage, 30);
 
   try {
@@ -43,7 +44,6 @@ export const fetchCrochetImages = async (query = "crochet", perPage = 10) => {
       },
     });
 
-    // Map results to a simple format
     return response.data.results.map((item) => ({
       id: item.id,
       link: item.urls.small,
