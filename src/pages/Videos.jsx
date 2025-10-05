@@ -131,7 +131,7 @@ const Videos = () => {
   if (error) return <p className="mt-8 ml-10 text-left text-red-500">{error}</p>;
 
   return (
-    <div className="w-full ml-10 mr-[15px]">
+    <div className="w-full ml-20 mr-[15px]">
       <div className="max-w-full p-4 md:p-8">
         {/* Modern Search Bar */}
         <div className="relative mb-6" ref={searchRef}>

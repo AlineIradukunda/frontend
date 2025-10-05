@@ -21,34 +21,47 @@ const categories = [
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [unsplashPage, setUnsplashPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [search, setSearch] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   const searchRef = useRef(null);
 
-  // Fetch products from backend + Unsplash
+  // ------------------------------
+  // Fetch backend + Unsplash images
+  // ------------------------------
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchInitialData = async () => {
       try {
         setLoading(true);
-        const backendRes = await api.get("products/");
-        const backendProducts = backendRes.data;
 
-        // Fetch Unsplash images
+        // 1️⃣ Fetch backend products
+        const backendRes = await api.get("products/");
+        const backendProducts = backendRes.data.map((p) => ({
+          id: p.id,
+          title: p.name,
+          image: p.image,
+          source: "backend",
+        }));
+
+        // 2️⃣ Fetch Unsplash images (first batch)
         const unsplashResults = await Promise.all(
-          categories.map((c) => fetchCrochetImages(c.toLowerCase(), 10))
+          categories.map((cat) => fetchCrochetImages(cat.toLowerCase(), 10))
         );
 
         const unsplashImages = unsplashResults
           .flat()
-          .filter(
-            (item, index, self) => index === self.findIndex((t) => t.id === item.id)
-          );
+          .map((img) => ({
+            id: img.id,
+            title: img.title,
+            image: img.link,
+            source: "unsplash",
+          }));
 
-        // Merge Unsplash + backend
-        const allProducts = [...unsplashImages, ...backendProducts];
+        const allProducts = [...unsplashImages,...backendProducts];
         setProducts(allProducts);
         setFilteredProducts(allProducts);
       } catch (err) {
@@ -59,28 +72,66 @@ const Products = () => {
       }
     };
 
-    fetchProducts();
+    fetchInitialData();
   }, []);
 
-  // Filter products
+  // ------------------------------
+  // Load more Unsplash images
+  // ------------------------------
+  const handleLoadMore = async () => {
+    try {
+      setLoadingMore(true);
+      const nextPage = unsplashPage + 1;
+
+      // Pick a random category each time for variety
+      const randomCategory =
+        categories[Math.floor(Math.random() * categories.length)];
+
+      const newImages = await fetchCrochetImages(randomCategory, 20);
+
+      const formatted = newImages.map((img) => ({
+        id: `${img.id}-${nextPage}`,
+        title: img.title,
+        image: img.link,
+        source: "unsplash",
+      }));
+
+      const updatedProducts = [...products, ...formatted];
+      setProducts(updatedProducts);
+      setFilteredProducts(updatedProducts);
+      setUnsplashPage(nextPage);
+    } catch (err) {
+      console.error("Error loading more images:", err.message);
+    } finally {
+      setLoadingMore(false);
+    }
+  };
+
+  // ------------------------------
+  // Search Filter
+  // ------------------------------
   useEffect(() => {
     if (!search) {
       setFilteredProducts(products);
     } else {
       const filtered = products.filter((product) =>
-        (product.name || product.title)?.toLowerCase().includes(search.toLowerCase())
+        product.title?.toLowerCase().includes(search.toLowerCase())
       );
       setFilteredProducts(filtered);
     }
   }, [search, products]);
 
-  // Handle category click
+  // ------------------------------
+  // Category Suggestion Logic
+  // ------------------------------
   const handleSuggestionClick = (category) => {
     setSearch(category);
     setShowSuggestions(false);
   };
 
-  // Close suggestions if click outside
+  // ------------------------------
+  // Close suggestions when clicking outside
+  // ------------------------------
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
@@ -91,13 +142,21 @@ const Products = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  if (loading) return <p className="mt-8 ml-10 text-left">Loading products...</p>;
-  if (error) return <p className="mt-8 ml-10 text-left text-red-500">{error}</p>;
+  // ------------------------------
+  // UI States
+  // ------------------------------
+  if (loading)
+    return <p className="mt-8 ml-10 text-left">Loading products...</p>;
+  if (error)
+    return <p className="mt-8 ml-10 text-left text-red-500">{error}</p>;
 
+  // ------------------------------
+  // Main UI
+  // ------------------------------
   return (
-    <div className="w-full ml-10 mr-[15px]">
+    <div className="w-full ml-20 mr-[15px]">
       <div className="max-w-full p-4 md:p-8">
-        {/* Search Bar */}
+        {/* 🔍 Search Bar */}
         <div className="relative mb-6" ref={searchRef}>
           <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
           <input
@@ -134,14 +193,25 @@ const Products = () => {
           )}
         </div>
 
-        {/* Product Grid */}
+        {/* 🧶 Product Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {filteredProducts.map((product, index) => (
             <ProductCard
-              key={product.id || product.link || index} // use link for Unsplash images
+              key={`${product.source}-${product.id || index}`}
               product={product}
             />
           ))}
+        </div>
+
+        {/* 🔁 Load More Button */}
+        <div className="flex justify-center mt-8">
+          <button
+            onClick={handleLoadMore}
+            disabled={loadingMore}
+            className="px-6 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 disabled:opacity-50 transition"
+          >
+            {loadingMore ? "Loading..." : "Load More Images"}
+          </button>
         </div>
       </div>
     </div>

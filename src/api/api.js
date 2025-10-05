@@ -19,41 +19,73 @@ const unsplashApi = axios.create({
   baseURL: "https://api.unsplash.com",
 });
 
-/**
- * Fetch crochet images from Unsplash
- * @param {string} query - Search term
- * @param {number} perPage - Number of images per request (max 30)
- */
-export const fetchCrochetImages = async (query = "crochet", perPage = 10) => {
+// -------------------
+// Fetch people-related images
+// -------------------
+export const fetchUniquePeopleImages = async (total = 30) => {
   if (!UNSPLASH_ACCESS_KEY) {
-    console.warn("Unsplash Access Key is missing! Skipping Unsplash images.");
+    console.warn("Unsplash Access Key is missing! Please add it to your .env file.");
     return [];
   }
 
-  const safePerPage = Math.min(perPage, 30);
+  const categories = ["people", "portrait", "fashion", "friends", "lifestyle", "smile", "group", "outdoor"];
+  const images = new Map();
 
   try {
-    const response = await unsplashApi.get("/search/photos", {
-      params: {
-        query,
-        per_page: safePerPage,
-        orientation: "squarish",
-      },
-      headers: {
-        Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}`,
-      },
+    const fetchPromises = categories.map((cat) =>
+      unsplashApi.get("/search/photos", {
+        params: { query: cat, per_page: 10, orientation: "portrait" },
+        headers: { Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}` },
+      })
+    );
+
+    const responses = await Promise.all(fetchPromises);
+
+    responses.forEach((res) => {
+      res.data.results.forEach((item) => {
+        if (!images.has(item.id)) {
+          images.set(item.id, {
+            id: item.id,
+            link: item.urls.small,
+            title: item.alt_description || "People Image",
+          });
+        }
+      });
     });
 
-    return response.data.results.map((item) => ({
+    return Array.from(images.values()).slice(0, total);
+  } catch (error) {
+    console.error("Unsplash API Error:", error.response?.data?.errors || error.message);
+    return [];
+  }
+};
+
+// -------------------
+// Fetch crochet-related images
+// -------------------
+export const fetchCrochetImages = async (category = "crochet", total = 30) => {
+  if (!UNSPLASH_ACCESS_KEY) {
+    console.warn("Unsplash Access Key is missing! Please add it to your .env file.");
+    return [];
+  }
+
+  try {
+    const res = await unsplashApi.get("/search/photos", {
+      params: {
+        query: category,
+        per_page: total,
+        orientation: "portrait",
+      },
+      headers: { Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}` },
+    });
+
+    return res.data.results.map((item) => ({
       id: item.id,
       link: item.urls.small,
-      title: item.alt_description || "Crochet Image",
+      title: item.alt_description || category,
     }));
   } catch (error) {
-    console.error(
-      "Unsplash API Error:",
-      error.response?.data?.errors || error.message
-    );
+    console.error("Unsplash API Error:", error.response?.data?.errors || error.message);
     return [];
   }
 };

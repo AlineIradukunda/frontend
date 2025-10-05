@@ -18,7 +18,7 @@ const Banner = () => {
   }, []);
 
   return (
-    <section className="bg-yellow-100 w-full">
+    <section className="bg-white w-full">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between px-4 md:px-16 py-8 md:py-16">
         {/* Left side */}
         <div className="md:w-1/2 mb-8 md:mb-0 z-10">
