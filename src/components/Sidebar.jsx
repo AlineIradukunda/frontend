@@ -15,8 +15,15 @@ const Sidebar = () => {
 
   return (
     <div className="fixed left-0 top-0 h-full w-16 bg-white text-black p-3 flex flex-col items-center shadow-md">
-      {/* Logo */}
-      <h1 className="text-lg font-bold mb-8">CD</h1>
+      
+      {/* Logo as image */}
+      <div className="mb-8">
+        <img 
+          src="/images/yarn.jpg" 
+          alt="Yarn Logo" 
+          className="w-10 h-10 object-contain"
+        />
+      </div>
 
       {/* Navigation Links */}
       <nav className="flex-1">

@@ -35,7 +35,7 @@ const Home = () => {
     <img 
       src="/images/coco.jpg" 
       alt="Crochet Intro" 
-      className="w-150 h-100 rounded-lg shadow-md"
+      className="w-full h-auto rounded-lg shadow-md"
     />
   </div>
 
