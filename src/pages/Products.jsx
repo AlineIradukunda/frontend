@@ -3,19 +3,45 @@ import ProductCard from "../components/ProductCard";
 import api, { fetchCrochetImages } from "../api/api";
 import { FaSearch, FaTimes } from "react-icons/fa";
 
-const categories = [
+// Local category images (your own photos)
+const localCategories = [
+  {
+    title: "Dresses",
+    images: Array.from({ length: 10 }, (_, i) => ({
+      id: `dress-${i + 1}`,
+      title: `Dress ${i + 1}`,
+      image: `/images/dresses/dress${i + 1}.jpg`,
+      source: "local",
+    })),
+  },
+  {
+    title: "Pillows",
+    images: Array.from({ length: 10 }, (_, i) => ({
+      id: `pillow-${i + 1}`,
+      title: `Pillow ${i + 1}`,
+      image: `/images/pillows/pillow${i + 1}.jpg`,
+      source: "local",
+    })),
+  },
+  {
+    title: "Baby Clothes",
+    images: Array.from({ length: 10 }, (_, i) => ({
+      id: `baby-${i + 1}`,
+      title: `Baby Clothes ${i + 1}`,
+      image: `/images/baby/baby${i + 1}.jpg`,
+      source: "local",
+    })),
+  },
+];
+
+// Unsplash categories
+const unsplashCategories = [
   "Crochet Dress",
   "Crochet Bag",
   "Crochet Hat",
   "Crochet Scarf",
   "Crochet Toys",
   "Crochet Blanket",
-  "Crochet Home Decor",
-  "Crochet People",
-  "Crochet Portrait",
-  "Crochet Colorful",
-  "Crochet Modern",
-  "Crochet Vintage",
 ];
 
 const Products = () => {
@@ -26,19 +52,18 @@ const Products = () => {
   const [error, setError] = useState(null);
   const [search, setSearch] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [loadingMore, setLoadingMore] = useState(false);
 
   const searchRef = useRef(null);
 
-  // ------------------------------
-  // Fetch backend + Unsplash images
-  // ------------------------------
   useEffect(() => {
-    const fetchInitialData = async () => {
+    const fetchProducts = async () => {
       try {
         setLoading(true);
 
-        // 1️⃣ Fetch backend products
+        // 1️⃣ Local images first
+        const localImages = localCategories.flatMap((cat) => cat.images);
+
+        // 2️⃣ Backend products
         const backendRes = await api.get("products/");
         const backendProducts = backendRes.data.map((p) => ({
           id: p.id,
@@ -47,11 +72,10 @@ const Products = () => {
           source: "backend",
         }));
 
-        // 2️⃣ Fetch Unsplash images (first batch)
+        // 3️⃣ Unsplash images (first batch)
         const unsplashResults = await Promise.all(
-          categories.map((cat) => fetchCrochetImages(cat.toLowerCase(), 10))
+          unsplashCategories.map((cat) => fetchCrochetImages(cat.toLowerCase(), 10))
         );
-
         const unsplashImages = unsplashResults
           .flat()
           .map((img) => ({
@@ -61,7 +85,7 @@ const Products = () => {
             source: "unsplash",
           }));
 
-        const allProducts = [...unsplashImages,...backendProducts];
+        const allProducts = [...localImages, ...unsplashImages, ...backendProducts];
         setProducts(allProducts);
         setFilteredProducts(allProducts);
       } catch (err) {
@@ -72,23 +96,19 @@ const Products = () => {
       }
     };
 
-    fetchInitialData();
+    fetchProducts();
   }, []);
 
-  // ------------------------------
   // Load more Unsplash images
-  // ------------------------------
   const handleLoadMore = async () => {
     try {
-      setLoadingMore(true);
+      setLoading(true);
       const nextPage = unsplashPage + 1;
 
-      // Pick a random category each time for variety
       const randomCategory =
-        categories[Math.floor(Math.random() * categories.length)];
+        unsplashCategories[Math.floor(Math.random() * unsplashCategories.length)];
 
       const newImages = await fetchCrochetImages(randomCategory, 20);
-
       const formatted = newImages.map((img) => ({
         id: `${img.id}-${nextPage}`,
         title: img.title,
@@ -103,35 +123,28 @@ const Products = () => {
     } catch (err) {
       console.error("Error loading more images:", err.message);
     } finally {
-      setLoadingMore(false);
+      setLoading(false);
     }
   };
 
-  // ------------------------------
-  // Search Filter
-  // ------------------------------
+  // Search filter
   useEffect(() => {
-    if (!search) {
-      setFilteredProducts(products);
-    } else {
-      const filtered = products.filter((product) =>
-        product.title?.toLowerCase().includes(search.toLowerCase())
+    if (!search) setFilteredProducts(products);
+    else {
+      const filtered = products.filter((p) =>
+        p.title.toLowerCase().includes(search.toLowerCase())
       );
       setFilteredProducts(filtered);
     }
   }, [search, products]);
 
-  // ------------------------------
-  // Category Suggestion Logic
-  // ------------------------------
+  // Suggestion click
   const handleSuggestionClick = (category) => {
     setSearch(category);
     setShowSuggestions(false);
   };
 
-  // ------------------------------
   // Close suggestions when clicking outside
-  // ------------------------------
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
@@ -142,21 +155,18 @@ const Products = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // ------------------------------
-  // UI States
-  // ------------------------------
   if (loading)
     return <p className="mt-8 ml-10 text-left">Loading products...</p>;
   if (error)
     return <p className="mt-8 ml-10 text-left text-red-500">{error}</p>;
 
-  // ------------------------------
-  // Main UI
-  // ------------------------------
   return (
-    <div className="w-full ml-20 mr-[15px]">
+    <div
+      className="ml-64 w-full font-serif" // ml-64 matches the sidebar width
+      style={{ fontFamily: "Times New Roman, serif" }}
+    >
       <div className="max-w-full p-4 md:p-8">
-        {/* 🔍 Search Bar */}
+        {/* Search */}
         <div className="relative mb-6" ref={searchRef}>
           <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
           <input
@@ -173,10 +183,9 @@ const Products = () => {
               onClick={() => setSearch("")}
             />
           )}
-
           {showSuggestions && (
             <div className="absolute z-10 w-50 bg-white border border-gray-200 rounded-2xl mt-1 shadow-lg max-h-40 overflow-y-auto text-sm">
-              {categories
+              {unsplashCategories
                 .filter((c) =>
                   search ? c.toLowerCase().includes(search.toLowerCase()) : true
                 )
@@ -193,8 +202,8 @@ const Products = () => {
           )}
         </div>
 
-        {/* 🧶 Product Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {/* Product Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 gap-4">
           {filteredProducts.map((product, index) => (
             <ProductCard
               key={`${product.source}-${product.id || index}`}
@@ -203,14 +212,14 @@ const Products = () => {
           ))}
         </div>
 
-        {/* 🔁 Load More Button */}
+        {/* Load More */}
         <div className="flex justify-center mt-8">
           <button
             onClick={handleLoadMore}
-            disabled={loadingMore}
+            disabled={loading}
             className="px-6 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 disabled:opacity-50 transition"
           >
-            {loadingMore ? "Loading..." : "Load More Images"}
+            {loading ? "Loading..." : "Load More Images"}
           </button>
         </div>
       </div>

@@ -6,7 +6,6 @@ import Products from './pages/Products';
 import Videos from './pages/Videos';
 import Contact from './pages/Contact';
 
-
 function App() {
   return (
     <Router>
@@ -16,10 +15,16 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
+<Route path="/about/story" element={<About />} />
+<Route path="/about/team" element={<About />} />
+<Route path="/about/careers" element={<About />} />
+
             <Route path="/products" element={<Products />} />
             <Route path="/videos" element={<Videos />} />
-            <Route path="/contact" element={<Contact />} />
-            
+  <Route path="/contact" element={<Contact type="general" />} />
+  <Route path="/contact/custom-orders" element={<Contact type="orders" />} />
+  <Route path="/contact/support" element={<Contact type="support" />} />
+  <Route path="/contact/feedback" element={<Contact type="feedback" />} />
           </Routes>
         </main>
       </div>
@@ -28,4 +33,3 @@ function App() {
 }
 
 export default App;
-

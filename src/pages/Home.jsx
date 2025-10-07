@@ -288,7 +288,8 @@ const Home = () => {
     </li>
   </ul>
 </section>
-        {/* Common Crochet Stitches */}
+        
+{/* Common Crochet Stitches */}
 <section className="my-16 px-4 md:px-8">
   <h2
     className="text-4xl font-bold mb-8 text-center text-black hover:text-gray-700 transition-colors duration-300"
@@ -309,9 +310,8 @@ const Home = () => {
   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
     {/* Slip Stitch */}
     <div className="bg-gradient-to-br from-[#F9F4E7] to-[#B6B09F] rounded-2xl shadow-lg p-6 hover:scale-105 transition-transform duration-300 text-center">
-      <div className="w-full h-40 bg-gray-200 rounded-xl mb-4 flex items-center justify-center">
-        {/* Image Placeholder */}
-        <span className="text-gray-500 italic">[Slip Stitch Image]</span>
+      <div className="w-full h-40 rounded-xl mb-4 overflow-hidden">
+        <img src="/images/crochet1.jpg" alt="Slip Stitch" className="w-full h-full object-cover" />
       </div>
       <h3
         className="text-2xl font-semibold mb-2 text-black"
@@ -330,8 +330,8 @@ const Home = () => {
 
     {/* Chain Stitch */}
     <div className="bg-gradient-to-br from-[#C3DAC3] to-[#B6B09F] rounded-2xl shadow-lg p-6 hover:scale-105 transition-transform duration-300 text-center">
-      <div className="w-full h-40 bg-gray-200 rounded-xl mb-4 flex items-center justify-center">
-        <span className="text-gray-500 italic">[Chain Stitch Image]</span>
+      <div className="w-full h-40 rounded-xl mb-4 overflow-hidden">
+        <img src="/images/crochet2.jpg" alt="Chain Stitch" className="w-full h-full object-cover" />
       </div>
       <h3
         className="text-2xl font-semibold mb-2 text-black"
@@ -350,8 +350,8 @@ const Home = () => {
 
     {/* Single Crochet */}
     <div className="bg-gradient-to-br from-[#E7E8E3] to-[#B6B09F] rounded-2xl shadow-lg p-6 hover:scale-105 transition-transform duration-300 text-center">
-      <div className="w-full h-40 bg-gray-200 rounded-xl mb-4 flex items-center justify-center">
-        <span className="text-gray-500 italic">[Single Crochet Image]</span>
+      <div className="w-full h-40 rounded-xl mb-4 overflow-hidden">
+        <img src="/images/crochet3.jpg" alt="Single Crochet" className="w-full h-full object-cover" />
       </div>
       <h3
         className="text-2xl font-semibold mb-2 text-black"
@@ -370,8 +370,8 @@ const Home = () => {
 
     {/* Double Crochet */}
     <div className="bg-gradient-to-br from-[#F5C3C3] to-[#B6B09F] rounded-2xl shadow-lg p-6 hover:scale-105 transition-transform duration-300 text-center">
-      <div className="w-full h-40 bg-gray-200 rounded-xl mb-4 flex items-center justify-center">
-        <span className="text-gray-500 italic">[Double Crochet Image]</span>
+      <div className="w-full h-40 rounded-xl mb-4 overflow-hidden">
+        <img src="/images/crochet4.jpg" alt="Double Crochet" className="w-full h-full object-cover" />
       </div>
       <h3
         className="text-2xl font-semibold mb-2 text-black"
@@ -390,8 +390,8 @@ const Home = () => {
 
     {/* Half-Double Crochet */}
     <div className="bg-gradient-to-br from-[#D6E3CF] to-[#B6B09F] rounded-2xl shadow-lg p-6 hover:scale-105 transition-transform duration-300 text-center">
-      <div className="w-full h-40 bg-gray-200 rounded-xl mb-4 flex items-center justify-center">
-        <span className="text-gray-500 italic">[Half-Double Crochet Image]</span>
+      <div className="w-full h-40 rounded-xl mb-4 overflow-hidden">
+        <img src="/images/crochet5.jpg" alt="Half-Double Crochet" className="w-full h-full object-cover" />
       </div>
       <h3
         className="text-2xl font-semibold mb-2 text-black"
@@ -409,6 +409,7 @@ const Home = () => {
     </div>
   </div>
 </section>
+
 
 
         {/* Materials & Tools */}
