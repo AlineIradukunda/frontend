@@ -99,7 +99,7 @@ const Sidebar = () => {
     <div className="fixed left-0 top-0 h-full w-64 bg-white text-black p-4 shadow-md overflow-y-auto scrollbar-hide">
       {/* Logo */}
       <div className="mb-6 flex items-center justify-center">
-        <img src="/images/yarn.jpg" alt="Yarn Logo" className="w-12 h-12 object-contain" />
+        <img src="/images/" alt="Yarn Logo" className="w-12 h-12 object-contain" />
         <span className="ml-2 font-bold text-lg" style={{ fontFamily: "Bookman Old Style" }}>
           Crochet Dream
         </span>

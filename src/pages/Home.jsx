@@ -117,15 +117,16 @@ const Home = () => {
       </>
     )}
 
-    <div className="text-center">
-      <button
-        onClick={() => setShowFullHistory(!showFullHistory)}
-        className="px-5 py-2 mt-4 bg-gradient-to-r from-red-500 via-green-500 to-black text-white font-semibold rounded-full hover:opacity-90 transition-all duration-300"
-        style={{ fontFamily: "Times New Roman, serif" }}
-      >
-        {showFullHistory ? "Read Less" : "Read More"}
-      </button>
-    </div>
+<div className="text-center">
+  <button
+    onClick={() => setShowFullHistory(!showFullHistory)}
+    className="px-5 py-2 mt-4 bg-gradient-to-r from-yellow-400 via-chocolate-500 to-black text-white font-semibold rounded-full hover:opacity-90 transition-all duration-300"
+    style={{ fontFamily: "Times New Roman, serif" }}
+  >
+    {showFullHistory ? "Read Less" : "Read More"}
+  </button>
+</div>
+
   </div>
 </section>
 
