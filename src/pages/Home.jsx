@@ -33,7 +33,7 @@ const Home = () => {
   {/* Image on the right */}
   <div className="md:w-1/2">
     <img 
-      src="/images/coco.jpg" 
+      src="/images/image12.webp" 
       alt="Crochet Intro" 
       className="w-full h-auto rounded-xl shadow-lg hover:scale-105 transition-transform duration-300"
     />
@@ -41,19 +41,16 @@ const Home = () => {
 
   {/* Text on the left */}
   <div className="md:w-1/2 flex flex-col justify-center">
-    <h2 
-      className="text-3xl md:text-4xl font-bold mb-3 text-gray-900 hover:text-gray-700"
+    <h2
+      className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 hover:text-gray-700 text-center"
       style={{ fontFamily: "Times New Roman, serif" }}
     >
       Discover the Art of Crochet
     </h2>
-    <p 
-      className="text-base md:text-lg text-gray-700 mb-3 leading-relaxed"
-      style={{ fontFamily: "Times New Roman, serif" }}
-    >
+<ul className="list-disc pl-6 text-black text-base space-y-2 max-w-3xl mx-auto" style={{ fontFamily: "Times New Roman, serif" }}>
       Crochet is more than just a craft — it's a creative journey. Transform simple yarn into stunning fabrics, stylish garments, and unique home décor.  
       <span className="font-semibold text-gray-900"> From beginners to experienced makers</span>, there’s always a new technique to explore and inspiration to discover.
-    </p>
+   </ul>
     <p 
       className="text-gray-600 italic"
       style={{ fontFamily: "Times New Roman, serif" }}
@@ -74,67 +71,49 @@ const Home = () => {
       Crochet History
     </h2>
 
-  <p 
-      className="text-base md:text-lg text-gray-700 mb-3 leading-relaxed"
-      style={{ fontFamily: "Times New Roman, serif" }}
-    >
+<ul className="list-disc pl-6 text-black text-base space-y-2 max-w-3xl mx-auto" style={{ fontFamily: "Times New Roman, serif" }}>
       Crochet, as we know it today, has origins that are more recent than many expect, yet it has fascinating precursors.
       Techniques like Chinese embroidery and French tambour lace used hooks to create intricate patterns on fabric.
       Shepherd’s knitting, practiced in countries such as Estonia, Scotland, and Romania, also contributed to crochet's
       development. Another ancestor, the ancient Danish technique of Nålebinding, influenced early needlework and inspired
       methods later used in crochet.
-    </p>
+    </ul>
 
     {showFullHistory && (
       <>
-        <p
-          className="mb-4 text-gray-800 leading-relaxed"
-          style={{ fontFamily: "Times New Roman, serif" }}
-        >
+<ul className="list-disc pl-6 text-black text-base space-y-2 max-w-3xl mx-auto" style={{ fontFamily: "Times New Roman, serif" }}>
           In the early 1800s, the first crochet patterns were published in Europe. The Dutch magazine{" "}
           <em>Penélopé</em> (1823) listed instructions for making purses, and by 1835, magazines in Germany and the
           Netherlands introduced new stitches for bags. During this period, crochet began to take form as a craft distinct
           from other textile arts.
-        </p>
+       </ul>
 
-        <p
-          className="mb-4 text-gray-800 leading-relaxed"
-          style={{ fontFamily: "Times New Roman, serif" }}
-        >
+<ul className="list-disc pl-6 text-black text-base space-y-2 max-w-3xl mx-auto" style={{ fontFamily: "Times New Roman, serif" }}>
           The mid-1800s saw the rise of Irish crochet lace. During the Great Irish Famine (1845–1849), women used crochet to
           earn money, creating lace that imitated expensive Venetian designs. French crocheter Mademoiselle Riego de la
           Branchardiere published crochet books, and even Queen Victoria learned to crochet herself, producing scarves for
           soldiers and popularizing the craft.
-        </p>
+        </ul>
 
-        <p
-          className="mb-4 text-gray-800 leading-relaxed"
-          style={{ fontFamily: "Times New Roman, serif" }}
-        >
+<ul className="list-disc pl-6 text-black text-base space-y-2 max-w-3xl mx-auto" style={{ fontFamily: "Times New Roman, serif" }}>
           By the late 1800s, technical improvements such as mercerization strengthened cotton for easier crocheting, and
           magazines published more complex patterns. The industrial revolution allowed middle- and upper-class women more
           free time, making crochet a fashionable hobby. In the early 1900s, Edwardian fashion encouraged detailed crochet
           clothing, and modern hooks were introduced, including the first American hooks in 1917 and aluminum hooks in 1923.
-        </p>
+        </ul>
 
-        <p
-          className="mb-4 text-gray-800 leading-relaxed"
-          style={{ fontFamily: "Times New Roman, serif" }}
-        >
+<ul className="list-disc pl-6 text-black text-base space-y-2 max-w-3xl mx-auto" style={{ fontFamily: "Times New Roman, serif" }}>
           During the World Wars, governments encouraged women to crochet for troops, providing practical items for soldiers.
           In the 1960s and 1970s, crochet experienced a revival through alternative and hippie cultures, with granny squares,
           home décor, and fashion items becoming popular once again.
-        </p>
+        </ul>
 
-        <p
-          className="mb-4 text-gray-800 leading-relaxed"
-          style={{ fontFamily: "Times New Roman, serif" }}
-        >
+<ul className="list-disc pl-6 text-black text-base space-y-2 max-w-3xl mx-auto" style={{ fontFamily: "Times New Roman, serif" }}>
           In the modern age, crochet has merged with social media and online communities. The Crochet Guild of America,
           founded in 1994, and the online forum Ravelry, established in 2007, helped enthusiasts share techniques, patterns,
           and designs worldwide. Today, crochet is celebrated as both a creative hobby and an art form, with countless
           designers continuing to innovate.
-        </p>
+        </ul>
       </>
     )}
 
@@ -273,10 +252,7 @@ const Home = () => {
   >
     Getting started with crochet requires some basic materials. Choosing the right tools can make a big difference in comfort and results.
   </p>
-  <ul
-    className="list-disc pl-6 space-y-2 text-lg"
-    style={{ fontFamily: "Times New Roman, serif", color: "#2b2b2b" }}
-  >
+<ul className="list-disc pl-6 text-base space-y-2 max-w-3xl" style={{ fontFamily: "Times New Roman, serif" }}>
     <li>
       <b className="text-[#0b6623]">Yarns:</b> Cotton, wool, acrylic, or blended fibers — each giving different textures and warmth.
     </li>
@@ -424,10 +400,7 @@ const Home = () => {
     Benefits of Crochet
   </h2>
 
-  <ul
-    className="list-disc pl-6 space-y-3 text-lg mb-6"
-    style={{ fontFamily: "Times New Roman, serif", color: "#2b2b2b" }}
-  >
+<ul className="list-disc pl-6 text-black text-base space-y-2 max-w-3xl" style={{ fontFamily: "Times New Roman, serif" }}>
     <li className="hover:text-[#0b6623] transition-colors duration-200">
       Boosts creativity and imagination.
     </li>
@@ -460,16 +433,13 @@ const Home = () => {
   </h2>
 
   <p
-    className="text-lg mb-4 text-[#333] leading-relaxed"
+    className="text-lg text-[#222222] hover:text-[#444444] mb-4 leading-relaxed"
     style={{ fontFamily: "Times New Roman, serif" }}
   >
     Crochet can be used to make a wide variety of creative and practical items, including:
   </p>
 
-  <ul
-    className="list-disc pl-6 space-y-3 text-lg"
-    style={{ fontFamily: "Times New Roman, serif", color: "#2b2b2b" }}
-  >
+<ul className="list-disc pl-6 text-black text-base space-y-2 max-w-3xl" style={{ fontFamily: "Times New Roman, serif" }}>
     <li className="hover:text-[#0b6623] transition-colors duration-200">
       <b>Clothing:</b> Sweaters, hats, scarves, socks, and shawls.
     </li>
@@ -546,14 +516,15 @@ const Home = () => {
 
   {/* Teaching Video */}
   <div className="mt-8 max-w-3xl mx-auto">
-    <video
-      controls
-      className="w-full h-auto rounded-xl shadow-lg"
-      style={{ fontFamily: "Times New Roman, serif" }}
-    >
-      <source src="/videos/crochet-tutorial.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
+<video
+  controls
+  className="w-full h-auto rounded-xl shadow-lg"
+  style={{ fontFamily: "Times New Roman, serif" }}
+>
+  <source src="/videos/Beginner.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
   </div>
 </section>
 

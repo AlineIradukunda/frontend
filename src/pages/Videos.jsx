@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
-import VideoCard from "../components/VideoCard";
 import { FaSearch, FaTimes } from "react-icons/fa";
 
 const categories = [
@@ -49,7 +48,7 @@ const Videos = () => {
         videoFile: video.video_files[0]?.link || "",
       }));
 
-      if (videoList.length < 12) setHasMore(false); // No more videos
+      if (videoList.length < 12) setHasMore(false);
 
       if (pageNumber === 1) {
         setVideos(videoList);
@@ -71,11 +70,9 @@ const Videos = () => {
     fetchVideos(search || "crochet", 1);
   }, []);
 
-  // Filter videos dynamically
   useEffect(() => {
-    if (!search) {
-      setFilteredVideos(videos);
-    } else {
+    if (!search) setFilteredVideos(videos);
+    else {
       const filtered = videos.filter((video) =>
         video.title.toLowerCase().includes(search.toLowerCase())
       );
@@ -83,7 +80,6 @@ const Videos = () => {
     }
   }, [search, videos]);
 
-  // Handle category click
   const handleSuggestionClick = (category) => {
     setSearch(category);
     setShowSuggestions(false);
@@ -92,7 +88,6 @@ const Videos = () => {
     fetchVideos(category, 1);
   };
 
-  // Close suggestions if click outside search bar
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
@@ -103,7 +98,6 @@ const Videos = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Infinite scroll handler
   const handleScroll = useCallback(() => {
     if (
       window.innerHeight + window.scrollY >= document.body.offsetHeight - 500 &&
@@ -121,17 +115,29 @@ const Videos = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-  // Deduplicate videos by ID before mapping
   const uniqueVideos = Array.from(
     new Map(filteredVideos.map((v) => [`${v.id}-${v.videoFile}`, v])).values()
   );
 
   if (loading && page === 1)
-    return <p className="mt-8 ml-10 text-left">Loading videos...</p>;
-  if (error) return <p className="mt-8 ml-10 text-left text-red-500">{error}</p>;
+    return <p className="mt-8 ml-[calc(240px+20px)] text-left">Loading videos...</p>;
+  if (error)
+    return (
+      <p className="mt-8 ml-[calc(240px+20px)] text-left text-red-500">{error}</p>
+    );
+
+  // Hover autoplay handlers
+  const handleMouseEnter = (e) => {
+    e.target.play();
+    e.target.muted = true; // Mute for autoplay
+  };
+  const handleMouseLeave = (e) => {
+    e.target.pause();
+    e.target.currentTime = 0;
+  };
 
   return (
-    <div className="w-full ml-20 mr-[15px]">
+    <div className="ml-[calc(240px+20px)] mr-[15px] w-[calc(100%-260px)]">
       <div className="max-w-full p-4 md:p-8">
         {/* Modern Search Bar */}
         <div className="relative mb-6" ref={searchRef}>
@@ -150,8 +156,6 @@ const Videos = () => {
               onClick={() => setSearch("")}
             />
           )}
-
-          {/* Suggestions Dropdown */}
           {showSuggestions && (
             <div className="absolute z-10 w-50 bg-white border border-gray-200 rounded-2xl mt-1 shadow-lg max-h-40 overflow-y-auto text-sm">
               {categories
@@ -172,14 +176,36 @@ const Videos = () => {
         </div>
 
         {/* Video Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {uniqueVideos.map((video, index) => (
-            <VideoCard key={`${video.id}-${index}`} video={video} />
+            <div
+              key={`${video.id}-${index}`}
+              className="rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300"
+            >
+              <video
+                src={video.videoFile}
+                poster={video.thumbnail}
+                controls
+                preload="metadata"
+                className="w-full h-56 object-cover rounded-t-xl"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              />
+              <div className="p-3 bg-white">
+                <h3 className="text-sm font-semibold text-gray-800 truncate">
+                  {video.title}
+                </h3>
+              </div>
+            </div>
           ))}
         </div>
 
-        {loading && page > 1 && <p className="text-center mt-4">Loading more videos...</p>}
-        {!hasMore && <p className="text-center mt-4 text-gray-500">No more videos to load.</p>}
+        {loading && page > 1 && (
+          <p className="text-center mt-4">Loading more videos...</p>
+        )}
+        {!hasMore && (
+          <p className="text-center mt-4 text-gray-500">No more videos to load.</p>
+        )}
       </div>
     </div>
   );
