@@ -1,42 +1,44 @@
 import React, { useState, useEffect } from "react";
 
 const Banner = () => {
-  const images = [
-    "/images/image1.jpeg",
-    "/images/image2.jpeg",
-    "/images/image3.jpeg",
-    "/images/image4.jpeg",
+  const messages = [
+    "Discover Handmade Crochet Products",
+    "Custom Designs Made Just for You",
+    "High-Quality, Unique Crochet Creations",
+    "Free Delivery on All Orders",
   ];
 
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % images.length);
-    }, 2000);
+      setCurrentMessageIndex((prev) => (prev + 1) % messages.length);
+    }, 3500);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <section className="bg-white w-full">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between px-4 md:px-16 py-8 md:py-16">
-        {/* Left side */}
-        <div className="md:w-1/2 mb-8 md:mb-0 z-10">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-800">
-            Discover Handmade Crochet Products
+    <section className="w-full py-20 bg-gradient-to-r from-green-500 via-red-600 to-black">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between px-4 md:px-16">
+        {/* Text Section */}
+        <div className="md:w-1/2 mb-8 md:mb-0 z-10 text-center md:text-left">
+          <h1
+            className="text-4xl md:text-5xl font-extrabold mb-6 text-white tracking-wide transition-all duration-500"
+            style={{ fontFamily: "Bookman Old Style" }}
+          >
+            {messages[currentMessageIndex]}
           </h1>
-          <p className="text-lg md:text-xl mb-6 text-gray-700">
-            Browse our collection or request your custom design. Half payment upfront, remaining on delivery. Free delivery for all orders!
+          <p className="text-lg md:text-xl mb-6 text-white opacity-90 leading-relaxed">
+            Browse our collection, request custom designs, and enjoy free delivery. Each piece is crafted with love and attention to detail.
           </p>
+          <button className="px-6 py-3 bg-white text-green-700 font-semibold rounded-lg hover:bg-gray-100 transition-all duration-300">
+            Shop Now
+          </button>
         </div>
 
-        {/* Right side: Slideshow */}
-        <div className="md:w-1/2 relative w-full h-64 md:h-72 flex justify-center items-center overflow-hidden rounded-lg shadow-lg">
-          <img
-            src={images[currentImageIndex]}
-            alt="Slide"
-            className="w-full h-full object-cover transition-opacity duration-1000"
-          />
+        {/* Decorative Right Side */}
+        <div className="md:w-1/2 flex justify-center md:justify-end">
+          <div className="w-64 h-64 md:w-72 md:h-72 bg-white bg-opacity-20 rounded-full animate-pulse"></div>
         </div>
       </div>
     </section>
